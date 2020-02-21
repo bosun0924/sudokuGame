@@ -1,4 +1,4 @@
-# Sudoku
+# Sudoku Solver
 from random import *
 from math import *
 import numpy as np
