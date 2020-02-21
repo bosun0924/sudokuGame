@@ -5,6 +5,18 @@ import numpy as np
 import sys
 from numpy.core._multiarray_umath import ndarray
 import pygame
+from tkinter import messagebox
+
+
+def text_objects(text, font, color):
+    textSurface = font.render(text, True, color)
+    return textSurface, textSurface.get_rect()
+
+def printText(text, row, column, color):
+    font = pygame.font.Font('freesansbold.ttf', 36)
+    TextSurf, textRect = text_objects(text,font, color)
+    textRect.center = ((MARGIN + HEIGHT) * row + MARGIN + (HEIGHT // 2),(MARGIN + WIDTH) * column + MARGIN +(WIDTH // 2))
+    screen.blit(TextSurf, textRect)
 
 def findPreSpot(n, board):
     n = n - 1
@@ -74,20 +86,23 @@ if sudokuSolver(0, board, answer):
     for i in range(9):
         print(answer[i])
 else:
-	print("No Solutions for this Sudoku!")
+    print("No Solutions for this Sudoku!")
+answer = list(answer)
+print(type(answer))
 #-----------------------------------------------
 # Define some colors
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
+BLUE = (0, 0, 255)
  
 # This sets the WIDTH and HEIGHT of each grid location
-WIDTH = 20
-HEIGHT = 20
+WIDTH = 60
+HEIGHT = 60
  
 # This sets the margin between each cell
-MARGIN = 5
+MARGIN = 10
  
 # Create a 2 dimensional array. A two dimensional
 # array is simply a list of lists.
@@ -102,7 +117,7 @@ for row in range(9):
 pygame.init()
  
 # Set the HEIGHT and WIDTH of the screen
-WINDOW_SIZE = [255, 255]
+WINDOW_SIZE = [640, 640]
 screen = pygame.display.set_mode(WINDOW_SIZE)
  
 # Set title of screen
@@ -113,7 +128,7 @@ done = False
  
 # Used to manage how fast the screen updates
 clock = pygame.time.Clock()
-print("h")
+
 # -------- Main Program Loop -----------
 while not done:
     for event in pygame.event.get():  # User did something
@@ -125,31 +140,60 @@ while not done:
             # Change the x/y screen coordinates to grid coordinates
             column = pos[0] // (WIDTH + MARGIN)
             row = pos[1] // (HEIGHT + MARGIN)
-            # Set that location to one
-            grid[row][column] = 1
             print("Click ", pos, "Grid coordinates: ", row, column)
- 
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_1:
+                grid[row][column] = 1
+            if event.key == pygame.K_2:
+                grid[row][column] = 2
+            if event.key == pygame.K_3:
+                grid[row][column] = 3
+            if event.key == pygame.K_4:
+                grid[row][column] = 4
+            if event.key == pygame.K_5:
+                grid[row][column] = 5
+            if event.key == pygame.K_6:
+                grid[row][column] = 6
+            if event.key == pygame.K_7:
+                grid[row][column] = 7
+            if event.key == pygame.K_8:
+                grid[row][column] = 8
+            if event.key == pygame.K_9:
+                grid[row][column] = 9
+            if event.key == pygame.K_SPACE:
+                grid[row][column] = 0
+
+    # If you won the game
+
     # Set the screen background
-    screen.fill(BLACK)
- 
+    screen.fill(WHITE)
+    
     # Draw the grid
-    for row in range(9):
-        for column in range(9):
-            color = WHITE
-            if grid[row][column] == 1:
-                color = GREEN
+    for r in range(9):
+        for c in range(9):
+            if board[r][c] == 0:
+                color = (128,128,128)
+            else:
+                color = BLACK
             pygame.draw.rect(screen,
                              color,
-                             [(MARGIN + WIDTH) * column + MARGIN,
-                              (MARGIN + HEIGHT) * row + MARGIN,
+                             [(MARGIN + WIDTH) * c + MARGIN,
+                              (MARGIN + HEIGHT) * r + MARGIN,
                               WIDTH,
                               HEIGHT])
+
+    for r in range(9):
+        for c in range(9):
+            if (grid[c][r] > 0) and (grid[c][r]==answer[c][r]):
+                printText(str(grid[c][r]), r, c, GREEN)
+            elif (grid[c][r] > 0):
+                printText(str(grid[c][r]), r, c, RED)
  
     # Limit to 60 frames per second
     clock.tick(60)
  
     # Go ahead and update the screen with what we've drawn.
-    pygame.display.flip()
+    pygame.display.update()
  
 # Be IDLE friendly. If you forget this line, the program will 'hang'
 # on exit.
