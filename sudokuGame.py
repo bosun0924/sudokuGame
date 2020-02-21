@@ -4,6 +4,7 @@ from math import *
 import numpy as np
 import sys
 from numpy.core._multiarray_umath import ndarray
+import pygame
 
 def findPreSpot(n, board):
     n = n - 1
@@ -74,3 +75,28 @@ if sudokuSolver(0, board, answer):
         print(answer[i])
 else:
 	print("No Solutions for this Sudoku!")
+#-----------------------------------------------
+# Define some colors
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+GREEN = (0, 255, 0)
+RED = (255, 0, 0)
+ 
+# This sets the WIDTH and HEIGHT of each grid location
+WIDTH = 20
+HEIGHT = 20
+ 
+# This sets the margin between each cell
+MARGIN = 5
+ 
+# Create a 2 dimensional array. A two dimensional
+# array is simply a list of lists.
+grid = []
+for row in range(9):
+    # Add an empty array that will hold each cell
+    # in this row
+    grid.append([])
+    for column in range(9):
+        grid[row].append(board[row][column])  # Append a cell
+print("Game starts")
+print(grid)
