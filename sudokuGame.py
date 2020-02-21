@@ -133,8 +133,8 @@ while not done:
     screen.fill(BLACK)
  
     # Draw the grid
-    for row in range(10):
-        for column in range(10):
+    for row in range(9):
+        for column in range(9):
             color = WHITE
             if grid[row][column] == 1:
                 color = GREEN
